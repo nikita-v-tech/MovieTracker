@@ -1,0 +1,15 @@
+.container1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 400px;
+}
+.film1 img{
+    max-width: 100%;
+}
+.film2 img{
+    max-width: 100%;
+}
+.film3 img{
+    max-width: 100%;
+}
