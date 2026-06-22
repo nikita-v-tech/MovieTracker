@@ -22,9 +22,6 @@
 .film1 img{
     max-width: 100%;
 }
-.film2 img{
-    max-width: 100%;
-}
-.film3 img{
-    max-width: 100%;
+.film1{
+    position: absolute;
 }
