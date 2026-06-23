@@ -1,5 +1,6 @@
-//обозначаем что элемент не схвачен
+//обозначаем начальные данные
 let dragElement = null;
+let returNfamily = null
 //расположение начально 
 let consX = 0;
 let consY = 0;
@@ -11,6 +12,8 @@ films.forEach(function(film) {
     film.addEventListener('mousedown', function(elem){
         //теперь элемент схвачен
         dragElement = film;
+        //запоминаем исходного родителя данного элемента
+        returNfamily = dragElement.parentNode;
         //отменяем стандратное поведение браузера для события
         elem.preventDefault();
         //получаем данные где элемент схвачен от ее края
@@ -28,10 +31,26 @@ films.forEach(function(film) {
         }
     })
     //ставим отпускание на всей странице
-    document.addEventListener('mouseup', function(){
+    document.addEventListener('mouseup', function(elem){
         //если элемент схвачен
         if(dragElement){
+        //временно прячем элемент на время поиска
+        dragElement.style.pointerEvents = 'none';
+        //узнаем какой элемент под мышкой
+        let elementPodd = document.elementFromPoint(elem.clientX, elem.clientY);
+        //возвращаем элементу видимость
+        dragElement.style.pointerEvents = '';
+        //ищем родителя данного элемента(класс)
+        let roD = elementPodd.closest('.column');
+        //если родитель есть
+        if(roD){
+            //ставим элемент в данный контейнер
+            roD.appendChild(dragElement);
+        }else{
+            returNfamily.appendChild(dragElement);
+        }
         //отпускаем элемент
         dragElement = null;
+        console.log(elementPodd)
       }
     });

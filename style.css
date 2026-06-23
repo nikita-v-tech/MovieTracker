@@ -25,3 +25,6 @@
 .film1{
     position: absolute;
 }
+.column{
+    min-height:auto
+}
