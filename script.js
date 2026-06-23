@@ -11,15 +11,15 @@ films.forEach(function(film) {
     film.addEventListener('mousedown', function(elem){
         //теперь элемент схвачен
         dragElement = film;
+        //отменяем стандратное поведение браузера для события
+        elem.preventDefault();
         //получаем данные где элемент схвачен от ее края
         consX = elem.clientX - film.getBoundingClientRect().left; 
         consY = elem.clientY - film.getBoundingClientRect().top;
+     })
     })
-})
-//перебор элемента
-films.forEach(function(filM){
-    //ставим движение элемента
-    filM.addEventListener('mousemove',function(elem){
+    //ставим движение элемента на всей странице
+    document.addEventListener('mousemove',function(elem){
         //проверяем схвачен ли элемент
         if(dragElement){
             //получаем новое значение расположение элемента
@@ -27,4 +27,11 @@ films.forEach(function(filM){
             dragElement.style.top = (elem.clientY - consY) + 'px';
         }
     })
-})
+    //ставим отпускание на всей странице
+    document.addEventListener('mouseup', function(){
+        //если элемент схвачен
+        if(dragElement){
+        //отпускаем элемент
+        dragElement = null;
+      }
+    });
