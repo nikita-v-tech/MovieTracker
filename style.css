@@ -22,9 +22,11 @@
 .film1 img{
     max-width: 100%;
 }
-.film1{
-    position: absolute;
-}
+
 .column{
-    min-height:auto
+    min-height:  80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
 }

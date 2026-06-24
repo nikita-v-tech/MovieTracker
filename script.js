@@ -14,6 +14,11 @@ films.forEach(function(film) {
         dragElement = film;
         //запоминаем исходного родителя данного элемента
         returNfamily = dragElement.parentNode;
+        //свободное движени
+        dragElement.style.position = 'absolute';
+        //вычислим координаты где схвачен элемент чтобы элемент не прыгал
+        dragElement.style.left = film.getBoundingClientRect().left + 'px';
+        dragElement.style.top = film.getBoundingClientRect().top + 'px';
         //отменяем стандратное поведение браузера для события
         elem.preventDefault();
         //получаем данные где элемент схвачен от ее края
@@ -36,18 +41,29 @@ films.forEach(function(film) {
         if(dragElement){
         //временно прячем элемент на время поиска
         dragElement.style.pointerEvents = 'none';
+        console.log('спрятали');
         //узнаем какой элемент под мышкой
         let elementPodd = document.elementFromPoint(elem.clientX, elem.clientY);
+        console.log('под мышкой:', elementPodd);
+        
         //возвращаем элементу видимость
         dragElement.style.pointerEvents = '';
         //ищем родителя данного элемента(класс)
         let roD = elementPodd.closest('.column');
+        console.log('колонка:' , roD);
+        
         //если родитель есть
         if(roD){
             //ставим элемент в данный контейнер
             roD.appendChild(dragElement);
+            dragElement.style.left = '';
+            dragElement.style.top = '';
+            dragElement.style.position = '';
         }else{
             returNfamily.appendChild(dragElement);
+            dragElement.style.left = '';
+            dragElement.style.top = '';
+            dragElement.style.position = '';
         }
         //отпускаем элемент
         dragElement = null;
