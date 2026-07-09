@@ -1,3 +1,25 @@
+//создаем отправку на сервер
+fetch('http://localhost:3000/movies')
+    .then(korobka => korobka.json())
+    .then(filmy => {
+        console.log(filmy);
+        filmy.forEach(film => {
+            const div = document.createElement('div');
+            div.classList.add('film1');
+            div.dataset.id = film.id;
+            const img = document.createElement('img');
+            img.src = film.image;
+            img.alt = film.title;
+            div.appendChild(img);
+            //находим колонку по статусу 
+            const kolonka = document.getElementById(film.status);
+            //закидываем созданный див в эту колонку
+            kolonka.appendChild(div);
+        })
+        DragAndDrop();
+    })
+//обернем это все в большую функцию
+function DragAndDrop (){
 //обозначаем начальные данные
 let dragElement = null;
 let returNfamily = null
@@ -14,16 +36,19 @@ films.forEach(function(film) {
         dragElement = film;
         //запоминаем исходного родителя данного элемента
         returNfamily = dragElement.parentNode;
-        //свободное движени
+        //записываем координаты пока карточка свободно стоит
+        let coordinateLeft = film.getBoundingClientRect().left;
+        let coordinateTop = film.getBoundingClientRect().top;
+        //теперь делаем ее свободной
         dragElement.style.position = 'absolute';
         //вычислим координаты где схвачен элемент чтобы элемент не прыгал
-        dragElement.style.left = film.getBoundingClientRect().left + 'px';
-        dragElement.style.top = film.getBoundingClientRect().top + 'px';
+        dragElement.style.left = coordinateLeft + 'px';
+        dragElement.style.top = coordinateTop + 'px';
         //отменяем стандратное поведение браузера для события
         elem.preventDefault();
         //получаем данные где элемент схвачен от ее края
-        consX = elem.clientX - film.getBoundingClientRect().left; 
-        consY = elem.clientY - film.getBoundingClientRect().top;
+        consX = elem.clientX - coordinateLeft; 
+        consY = elem.clientY - coordinateTop;
      })
     })
     //ставим движение элемента на всей странице
@@ -37,6 +62,10 @@ films.forEach(function(film) {
     })
     //ставим отпускание на всей странице
     document.addEventListener('mouseup', function(elem){
+        //отменяем стандартное поведение браузера
+        elem.preventDefault();
+        //запрещаем браузеру менять дальше
+        elem.stopPropagation();
         //если элемент схвачен
         if(dragElement){
         //временно прячем элемент на время поиска
@@ -59,6 +88,20 @@ films.forEach(function(film) {
             dragElement.style.left = '';
             dragElement.style.top = '';
             dragElement.style.position = '';
+            const idFilma = dragElement.dataset.id;
+            const neWstatus = roD.id;   
+            fetch(`http://localhost:3000/movies/${idFilma}`, {
+                method: 'PATCH', // Сказали серверу: "Делаем заплатку"
+                headers: {
+                    'Content-Type': 'application/json'// Предупредили, что отправляем JSON
+                },
+                body: JSON.stringify({
+                    status: neWstatus // Отправляем конверт с новым статусом
+                })
+                })
+                .then(res =>{
+                    console.log('Сервер успешно обновил базу данных!')
+                })
         }else{
             returNfamily.appendChild(dragElement);
             dragElement.style.left = '';
@@ -70,3 +113,4 @@ films.forEach(function(film) {
         console.log(elementPodd)
       }
     });
+}
