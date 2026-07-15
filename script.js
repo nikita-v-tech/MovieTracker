@@ -1,3 +1,5 @@
+//Обернем все в функцию
+function loadeMovie (){
 //создаем отправку на сервер
 fetch('http://localhost:3000/movies')
     .then(korobka => korobka.json())
@@ -18,6 +20,8 @@ fetch('http://localhost:3000/movies')
         })
         DragAndDrop();
     })
+}
+loadeMovie();
 //обернем это все в большую функцию
 function DragAndDrop (){
 //обозначаем начальные данные
@@ -114,3 +118,32 @@ films.forEach(function(film) {
       }
     });
 }
+
+//создаем переменные для найденных элементов
+const titleForm = document.querySelector('#forms');
+const titleFilm = document.querySelector('#nameFilm');
+const titleHttps = document.querySelector('#imgFilm');
+//вешаем событие
+titleForm.addEventListener('submit', function(e){
+    //отменяем стандартное поведение браузера
+     e.preventDefault();
+     //создаем объект
+     const newMovie ={
+        "title": titleFilm.value,
+        "image": titleHttps.value,
+        "status": "done"
+     };
+     fetch('http://localhost:3000/movies',{
+            method: 'POST', //принесли новое на сервер
+            headers: { 'Content-Type': 'application/json'},//внутри чистый текст
+            body: JSON.stringify(newMovie)
+        })
+        //распечатали конверт
+        .then(ress => ress.json())
+        .then(newfilmy => {
+            //прорисовка страницы
+
+            //очистка ввода
+            titleForm.reset()
+        })
+})
