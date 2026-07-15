@@ -30,3 +30,26 @@
     gap: 10px;
     flex: 1;
 }
+.pol1 input{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 10px;
+    border: 3px solid #FFD700;
+    text-align: center;
+}
+.tuk{
+    text-transform: uppercase;
+    font-family: Verdana;
+    color: #333;
+    background-color: #FFD700;
+    padding: 4px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    margin: 5px auto;
+}
+.pol1 label{
+    display: block;
+    text-align: center;
+}
