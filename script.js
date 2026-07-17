@@ -5,6 +5,10 @@ fetch('http://localhost:3000/movies')
     .then(korobka => korobka.json())
     .then(filmy => {
         console.log(filmy);
+        const cssClass = document.querySelectorAll('.movielist');
+        cssClass.forEach(badge =>{
+            badge.innerHTML = '';
+        })
         filmy.forEach(film => {
             const div = document.createElement('div');
             div.classList.add('film1');
@@ -15,8 +19,10 @@ fetch('http://localhost:3000/movies')
             div.appendChild(img);
             //находим колонку по статусу 
             const kolonka = document.getElementById(film.status);
+            //поиск полки в колонке
+            const polkaFilm = kolonka.querySelector('.movielist');
             //закидываем созданный див в эту колонку
-            kolonka.appendChild(div);
+            polkaFilm.appendChild(div);
         })
         DragAndDrop();
     })
@@ -131,7 +137,7 @@ titleForm.addEventListener('submit', function(e){
      const newMovie ={
         "title": titleFilm.value,
         "image": titleHttps.value,
-        "status": "done"
+        "status": "todo"
      };
      fetch('http://localhost:3000/movies',{
             method: 'POST', //принесли новое на сервер
@@ -142,7 +148,7 @@ titleForm.addEventListener('submit', function(e){
         .then(ress => ress.json())
         .then(newfilmy => {
             //прорисовка страницы
-
+            loadeMovie()
             //очистка ввода
             titleForm.reset()
         })
